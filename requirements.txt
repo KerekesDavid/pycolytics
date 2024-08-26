@@ -1,0 +1,3 @@
+sqlmodel
+fastapi
+pydantic-settings
