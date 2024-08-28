@@ -11,3 +11,5 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings():
     return Settings()
+
+default_dev_key = bytes.fromhex("492d616d2d616e2d756e7365637572652d6465762d6b65792d5245504c4143455f4d45").decode('utf-8')

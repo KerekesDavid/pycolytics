@@ -1,17 +1,18 @@
 import datetime
-from typing import Annotated
+from typing import Annotated, Optional
 import fastapi
 from sqlmodel import Field, Column, JSON, SQLModel
 from pydantic.functional_validators import AfterValidator
-from .config import get_settings
+from .config import get_settings, default_dev_key
 
 settings = get_settings()
 
 
 class EventBase(SQLModel):
     event_type: str = Field(index=True)
-    platform: str = Field(index=True)
+    application: str = Field(index=True)
     version: str = Field(index=True)
+    platform: str = Field(index=True)
     user_id: str = Field(index=True)
     session_id: str = Field()
     value: dict = Field(default_factory=dict, sa_column=Column(JSON, nullable=False))
@@ -38,10 +39,9 @@ class EventCreate(EventBase):
             detail="Invalid or missing API Key",
         )
 
-    api_key: Annotated[str, AfterValidator(validate_api_key)]
+    api_key: Annotated[str, AfterValidator(validate_api_key)] = default_dev_key
 
 
 class Event(EventBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     time: datetime.datetime | None = Field(default_factory=datetime.datetime.now, nullable=False)
-

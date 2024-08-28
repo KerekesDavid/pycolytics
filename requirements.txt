@@ -1,3 +1,5 @@
+aiosqlite
 sqlmodel
 fastapi
 pydantic-settings
+gunicorn
