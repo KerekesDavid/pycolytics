@@ -1,0 +1,28 @@
+[
+  {
+      "event_type": "string",
+      "application": "string",
+      "version": "string",
+      "platform": "string",
+      "user_id": "string",
+      "session_id": "string",
+      "value": {
+          "2": 15.2,
+          "a": "b"
+      },
+      "api_key": "I-am-an-unsecure-dev-key-REPLACE_ME"
+  },
+  {
+    "event_type": "string",
+    "application": "string",
+    "version": "string",
+    "platform": "string",
+    "user_id": "string",
+    "session_id": "string",
+    "value": {
+        "2": 15.2,
+        "a": "b"
+    },
+    "api_key": "I-am-an-unsecure-dev-key-REPLACE_ME"
+  }
+]

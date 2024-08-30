@@ -7,6 +7,7 @@ The goal of this library is to be easy to set up and easy to use. Minimal depend
 
     ```
     git clone git@github.com:KerekesDavid/pycolytics.git
+    cd pycolytics
     pip install -r requirements.txt
     ```
 
@@ -24,7 +25,7 @@ The library is written in python, based on [SQLite](https://github.com/sqlite/sq
 
 I was too lazy to set up a rust compile environment and install postgresql for something so simple, so I spent two days writing Pycolytics instead. To help you avoid my mistake, I made it so you can just clone it and move on with your life.
 
-True to its name, it's probably 10<sup>6</sup> times slower than Attolytics, but who cares if it still serves my entire userbase from a rasberry-pi. It does asyncio and fancy multi-worker stuff to try and compensate.
+True to its name, Pycolythics is probably 10<sup>6</sup> times slower than Attolytics, but who cares if it still serves my entire userbase from a rasberry-pi. It does asyncio and fancy multi-worker stuff to try and compensate.
 
 I'm currently working on a Godot plugin that makes sending events to the server easy, and if there's interest I might cook up something for Unity as well. Leave a comment if you wish to contribute!
 
@@ -43,7 +44,7 @@ Edit the .env file, or specify these parameters as environment variables:
     ```
 
 ## API
-The server will listen to POST requests at `http://ip:port/1.0/events`, and will expect a request body in the following format:
+The server will listen to POST requests at `http://ip:port/v1.0/event`, and will expect a request body in the following format:
 
 ```
 {
@@ -61,11 +62,20 @@ The server will listen to POST requests at `http://ip:port/1.0/events`, and will
 }
 ```
 
+There is also a more performant batch interface at `http://ip:port/v1.0/events`, expecting a list of events:
+```
+[
+  {"event_type": ...}, 
+  {"event_type": ...},
+  ...
+]
+```
+
 An example curl call for logging an event:
 
 ```
 curl -X 'POST' \
-  'http://127.0.0.1:8000/1.0/events' \
+  'http://127.0.0.1:8000/v1.0/event' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -156,7 +166,6 @@ Setting up a permanent server as a service is also quite simple:
 
 ## Planned features
 In order of priority:
-- Godot plugin
 - HTTPS communication for you security nerds out there
 - Unity plugin
 - Publish as a pip package if I get bored
