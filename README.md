@@ -19,17 +19,21 @@ The goal of this library is to be easy to set up and easy to use. Minimal depend
 
 - After launch, API docs are available at: http://127.0.0.1:8000/docs 
 
-
+## How We Got Here
 
 The library is written in python, based on [SQLite](https://github.com/sqlite/sqlite) and [FastAPI](https://github.com/fastapi/fastapi), and was inspired by [Attolytics](https://github.com/ttencate/attolytics/). 
 
 I was too lazy to set up a rust compile environment and install postgresql for something so simple, so I spent two days writing Pycolytics instead. To help you avoid my mistake, I made it so you can just clone it and move on with your life.
 
-True to its name, Pycolythics is probably 10<sup>6</sup> times slower than Attolytics, but who cares if it still serves my entire userbase from a rasberry-pi. It does asyncio and fancy multi-worker stuff to try and compensate.
+True to its name, Pycolytics is probably 10<sup>6</sup> times slower than Attolytics, but who cares if it still serves my entire userbase from a rasberry-pi. It does asyncio and fancy multi-worker stuff to try and compensate.
 
-I'm currently working on a Godot plugin that makes sending events to the server easy, and if there's interest I might cook up something for Unity as well. Leave a comment if you wish to contribute!
+Leave an issue if you wish to contribute, or buy me a coffe if you find my work useful.
 
 <a href='https://ko-fi.com/E1E712JJXK' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
+
+## Clients
+Comes with a client addon for Godot 4.x: [https://github.com/KerekesDavid/pycolytics-godot](https://github.com/KerekesDavid/pycolytics-godot)
 
 ## Configuration
 Edit the .env file, or specify these parameters as environment variables:
@@ -115,7 +119,7 @@ It can be opened using any sqlite database browser, or in python using the built
 
 My personal choice for performing data analytics is a [jupyter notebook](https://jupyter.org/) using [pandas](https://pandas.pydata.org/). They have a wonerful cheat sheet [here](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf).
 
-## Launching a production server
+## Launching a Production Server
 Setting up a permanent server as a service is also quite simple:
 - Generate an API key:
     ```
@@ -164,8 +168,6 @@ Setting up a permanent server as a service is also quite simple:
    ```sudo systemctl status pycolytics```
 
 
-## Planned features
-In order of priority:
+## Planned Features
 - HTTPS communication for you security nerds out there
-- Unity plugin
-- Publish as a pip package if I get bored
+
