@@ -1,5 +1,5 @@
 # Pycolytics
-A tiny webservice for logging software analytics events.
+A tiny webservice for logging software analytics events. It takes HTTP requests, and puts them into an SQLite database,
 
 The goal of this library is to be easy to set up and easy to use. Minimal dependencies, no complicated database setups.
 
@@ -21,13 +21,13 @@ The goal of this library is to be easy to set up and easy to use. Minimal depend
 
 ## How We Got Here
 
-The library is written in python, based on [SQLite](https://github.com/sqlite/sqlite) and [FastAPI](https://github.com/fastapi/fastapi), and was inspired by [Attolytics](https://github.com/ttencate/attolytics/). 
+Pycolytics is written in python, based on [SQLite](https://github.com/sqlite/sqlite) and [FastAPI](https://github.com/fastapi/fastapi), and was inspired by [Attolytics](https://github.com/ttencate/attolytics/). 
 
-I was too lazy to set up a rust compile environment and install postgresql for something so simple, so I spent two days writing Pycolytics instead. To help you avoid my mistake, I made it so you can just clone it and move on with your life.
+When I was looking at Attolytics, I was too lazy to set up a rust compile environment and install postgresql for something so simple, so I spent two days writing Pycolytics instead. To help you avoid my mistake, I made it so you can just clone it and move on with your life.
 
 True to its name, Pycolytics is probably 10<sup>6</sup> times slower than Attolytics, but who cares if it still serves my entire userbase from a rasberry-pi. It does asyncio and fancy multi-worker stuff to try and compensate.
 
-Leave an issue if you wish to contribute, or buy me a coffe if you find my work useful.
+Open an issue if you wish to contribute, or buy me a coffee if you find my work useful.
 
 <a href='https://ko-fi.com/E1E712JJXK' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
