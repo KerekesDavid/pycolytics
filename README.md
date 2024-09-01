@@ -32,8 +32,10 @@ Open an issue if you wish to contribute, or buy me a coffee if you find my work 
 <a href='https://ko-fi.com/E1E712JJXK' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 
-## Clients
-Comes with a client addon for Godot 4.x: [https://github.com/KerekesDavid/pycolytics-godot](https://github.com/KerekesDavid/pycolytics-godot)
+## Client Plugin for Godot 4.2+
+- I wrote a plugin for Godot: just install it and call a single function to log an event! You can find it in the [asset library](https://godotengine.org/asset-library/asset/3292), or on [github](https://github.com/KerekesDavid/pycolytics-godot).
+
+- If you have written clients for anything else, I would be more than happy to feature them here!
 
 ## Configuration
 Edit the .env file, or specify these parameters as environment variables:
