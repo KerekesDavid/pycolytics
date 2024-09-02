@@ -2,5 +2,5 @@ aiosqlite
 sqlmodel
 fastapi[standard]
 pydantic-settings
-gunicorn
+uvicorn[standard]
 slowapi
