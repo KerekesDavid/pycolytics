@@ -3,3 +3,4 @@ sqlmodel
 fastapi[standard]
 pydantic-settings
 gunicorn
+slowapi

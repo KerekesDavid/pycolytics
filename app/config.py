@@ -1,10 +1,12 @@
 from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+import typing
+import pydantic
 
 class Settings(BaseSettings):
     sqlite_file_name: str = "fallback.db"
     api_keys: list[str] = []
+    rate_limit: str = "60/minute"
 
     model_config = SettingsConfigDict(env_file=".env")
 
