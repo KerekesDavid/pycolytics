@@ -44,4 +44,6 @@ class EventCreate(EventBase):
 
 class Event(EventBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    time: datetime.datetime | None = Field(default_factory=datetime.datetime.now, nullable=False)
+    time: datetime.datetime | None = Field(
+        default_factory=datetime.datetime.now, nullable=False
+    )
