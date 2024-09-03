@@ -6,7 +6,7 @@ from .config import get_settings
 
 settings = get_settings()
 
-sqlite_url = f"sqlite+aiosqlite:///databases/{settings.sqlite_file_name}"
+sqlite_url = f"sqlite+aiosqlite:///{settings.sqlite_file_path}"
 connect_args = {"check_same_thread": False}
 engine = sqlalchemy.ext.asyncio.create_async_engine(
     sqlite_url, echo=True, connect_args=connect_args

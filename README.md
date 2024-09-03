@@ -122,42 +122,58 @@ It can be opened using any sqlite database browser, or in python using the built
 My personal choice for performing data analytics is a [jupyter notebook](https://jupyter.org/) using [pandas](https://pandas.pydata.org/). They have a wonerful cheat sheet [here](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf).
 
 ## Launching a Production Server
-Setting up a permanent server as a service is also quite simple:
+Setting up a permanent server as a service is also quite simple.
+
+The method I share here has some minimal extra complications, but it ensures some level of separation from other parts of the system using systemd's `DynamicUser` parameter. It might come handy in case there is a vulnerability in FastAPI.
+
+(Contributions to this section are very welcome, I'm barely a fledgeling server admin.)
+
+- Install pycolytics, and set up a virtualenv.
+  A usual place for this would be `/srv/pycolytics` for example.
+
+- Create a systemd service file: `/etc/systemd/system/pycolytics.service`
+
+    ```
+    [Unit]
+    Description=Uvicorn instance serving Pycolytics
+    After=network.target
+
+    [Service]
+    Type=simple
+    DynamicUser=yes
+    User=pycolytics
+
+    WorkingDirectory=/srv/pycolytics
+    StateDirectory=pycolytics/databases
+
+    ExecStart=/srv/pycolytics/.venv/bin/uvicorn \
+            --workers=4 \
+            --host=0.0.0.0 \
+            --port=8080 \
+            app.main:app
+    ExecReload=/bin/kill -HUP ${MAINPID}
+    RestartSec=15
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+
+    ```
 - Generate an API key:
     ```
     openssl rand -base64 24
     ```
     This will stop random people from logging events in your database, it will not stop a script kiddie who can decompile the key from your app, or pluck it from network traffic. I'd suggest creating a new one for every version of your application, and retiring old ones after a while.
 
-- Replace `API_KEYS=["I-am-an-unsecure-dev-key-REPLACE_ME"]` in the .env file with the newly generated key.
+- Setup the .env file:
+  - Replace `API_KEYS=["I-am-an-unsecure-dev-key-REPLACE_ME"]` with the newly generated key.
+  - Set the database path to the systemd state directory: `SQLITE_FILE_NAME="/var/lib/pycolytics/databases/database.db"`
 
-- Create a systemd service file: `/etc/systemd/system/pycolytics.service`
-
-    ```
-    [Unit]
-    Description=Gunicorn instance to serve pycolytics
-    After=network.target
-
-    [Service]
-    User=your_username
-    Group=your_groupname
-    WorkingDirectory=/path/to/pycolytics
-    Environment="PATH=/path/to/venv/bin"
-    ExecStart=/path/to/venv/bin/gunicorn app -w 4 -k uvicorn.workers.UvicornWorker
-    ExecReload=/bin/kill -s HUP $MAINPID
-    KillMode=mixed
-    TimeoutStopSec=5
-    PrivateTmp=true
-
-    [Install]
-    WantedBy=multi-user.target
-    ```
-
-- Reload the systemd to read the config:
+- Run read the new config:
 
    ```sudo systemctl daemon-reload```
 
-- Enable the service start on boot:
+- Make the service start on boot:
 
    ```sudo systemctl enable pycolytics```
 
@@ -169,6 +185,13 @@ Setting up a permanent server as a service is also quite simple:
 
    ```sudo systemctl status pycolytics```
 
+- In case you need to fix configurations and restart the service use:
+
+     ```sudo systemctl daemon-reload
+     sudo systemctl restart pycolytics
+     ```
+
+Most online guides also recommend setting up fastapi behind an nginx reverse proxy, in case somebody tries to DDOS your server. I've never been successful enough for this to happen, so I'll leave it to you to figure out the details.
 
 ## Planned Features
 - HTTPS communication for you security nerds out there

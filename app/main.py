@@ -1,3 +1,6 @@
+__version__ = "v1.1.0"
+__api_version__ = "v1.0.0"
+
 from contextlib import asynccontextmanager
 
 import fastapi
@@ -24,9 +27,19 @@ async def lifespan(app: fastapi.FastAPI):
     await create_db_and_tables()
     yield
 
+description = f"""
+Running Pycolitics __{__version__}__
+
+Serving API version: __{__api_version__}__
+"""
 
 limiter = slowapi.Limiter(key_func=slowapi.util.get_remote_address)
-app = fastapi.FastAPI(lifespan=lifespan)
+app = fastapi.FastAPI(
+    lifespan=lifespan,
+    title="Pycolytics Event API",
+    version=__api_version__,
+    description=description,
+)
 app.state.limiter = limiter
 app.add_exception_handler(
     slowapi.errors.RateLimitExceeded, slowapi._rate_limit_exceeded_handler
@@ -39,7 +52,7 @@ async def log_event(
     *,
     session: AsyncSession = fastapi.Depends(get_session),
     event: EventCreate,
-    request: fastapi.Request
+    request: fastapi.Request,
 ):
     db_event = Event.model_validate(event)
     session.add(db_event)
@@ -52,7 +65,7 @@ async def log_events(
     *,
     session: AsyncSession = fastapi.Depends(get_session),
     events: list[EventCreate],
-    request: fastapi.Request
+    request: fastapi.Request,
 ):
     db_events = [Event.model_validate(event).model_dump() for event in events]
     # Pylance freaks out if I use exec here, says it can't take an Executable
