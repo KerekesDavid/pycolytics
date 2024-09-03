@@ -39,15 +39,17 @@ Open an issue if you wish to contribute, or buy me a coffee if you find my work 
 
 ## Configuration
 Edit the .env file, or specify these parameters as environment variables:
+```
+# Name of the database file to write into.
+SQLITE_FILE_PATH="databases/database.db"
 
-    ```
-    # Name of the database file to write.
-    SQLITE_FILE_NAME="database.db"
+# A list of secret keys. The server won't accept events that do not contain one of these keys in the request body.
+API_KEYS=["I-am-an-unsecure-dev-key-REPLACE_ME"]
 
-    # A list of secret keys. The server won't accept events
-    # that do not contain one of these keys in the request body.
-    API_KEYS=["I-am-an-unsecure-dev-key-REPLACE_ME"]
-    ```
+# Requests from the same IP above this rate will be rejected.
+# See https://limits.readthedocs.io/en/stable/quickstart.html#rate-limit-string-notation
+RATE_LIMIT="60/minute"
+```
 
 ## API
 The server will listen to POST requests at `http://ip:port/v1.0/event`, and will expect a request body in the following format:
