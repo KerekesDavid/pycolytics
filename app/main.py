@@ -1,4 +1,4 @@
-__version__ = "v1.1.0"
+__version__ = "v1.1.1"
 __api_version__ = "v1.0.0"
 
 from contextlib import asynccontextmanager
@@ -27,6 +27,7 @@ async def lifespan(app: fastapi.FastAPI):
     await create_db_and_tables()
     yield
 
+
 description = f"""
 Running Pycolitics __{__version__}__
 
@@ -53,10 +54,12 @@ async def log_event(
     session: AsyncSession = fastapi.Depends(get_session),
     event: EventCreate,
     request: fastapi.Request,
+    response: fastapi.Response,
 ):
     db_event = Event.model_validate(event)
     session.add(db_event)
     await session.commit()
+    del response.headers["content-type"]
 
 
 @app.post("/v1.0/events", status_code=204, responses={401: {"model": HTTPError}})
@@ -66,8 +69,10 @@ async def log_events(
     session: AsyncSession = fastapi.Depends(get_session),
     events: list[EventCreate],
     request: fastapi.Request,
+    response: fastapi.Response,
 ):
     db_events = [Event.model_validate(event).model_dump() for event in events]
-    # Pylance freaks out if I use exec here, says it can't take an Executable
-    await session.execute(sqlmodel.insert(Event).values(db_events))
+    # Pyright freaks out here, claims this can't take an Executable when it clearly can
+    await session.exec(sqlmodel.insert(Event).values(db_events))
     await session.commit()
+    del response.headers["content-type"]
