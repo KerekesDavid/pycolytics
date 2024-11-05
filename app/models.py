@@ -1,5 +1,6 @@
 import datetime
-from typing import Annotated, Optional
+import hmac
+from typing import Annotated
 import fastapi
 from sqlmodel import Field, Column, JSON, SQLModel
 from pydantic.functional_validators import AfterValidator
@@ -32,8 +33,9 @@ class EventCreate(EventBase):
         Raises:
             HTTPException: If the API key is invalid or missing.
         """
-        if key in settings.api_keys:
-            return key
+        for k in settings.api_keys:
+            if hmac.compare_digest(k, key):
+                return key
         raise fastapi.HTTPException(
             status_code=fastapi.status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or missing API Key",
